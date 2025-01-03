@@ -1,7 +1,7 @@
 import { notFound, redirect } from "next/navigation";
 
-import { PageHeading } from "~/components/atoms/page-heading";
 import { EvaluationForm } from "~/components/organisms/evaluation-form";
+import { PageHeading } from "~/components/atoms/page-heading";
 import { db } from "~/server/db";
 
 type Params = Promise<{ id: string }>;
@@ -48,6 +48,7 @@ export default async function EvaluationPage({ params }: { params: Params }) {
   const lastEvaluation = (await db.evaluation.findFirst({
     where: {
       done: true,
+      patientId: evaluation?.patientId,
     },
     orderBy: {
       createdAt: "asc",
