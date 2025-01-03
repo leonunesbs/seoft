@@ -10,8 +10,9 @@ import {
   TableRow,
 } from "~/components/ui/table";
 
-import { db } from "~/server/db";
 import { HydrateClient } from "~/trpc/server";
+import Link from "next/link";
+import { db } from "~/server/db";
 
 export default async function Dashboard() {
   const patientsCount = await db.patient.count();
@@ -95,7 +96,15 @@ export default async function Dashboard() {
               <TableBody>
                 {recentEvaluations.map((evaluation) => (
                   <TableRow key={evaluation.id}>
-                    <TableCell>{evaluation.patient?.name || "N/A"}</TableCell>
+                    <TableCell>
+                      <Link
+                        href={`/patients/${evaluation.patientId}`}
+                        aria-label={`Ver detalhes do paciente ${evaluation.patient?.name || "N/A"}`}
+                        className="font-semibold hover:underline"
+                      >
+                        {evaluation.patient?.name || "N/A"}
+                      </Link>
+                    </TableCell>
                     <TableCell>
                       {evaluation.collaborator?.name || "N/A"}
                     </TableCell>
@@ -109,7 +118,13 @@ export default async function Dashboard() {
                       )}
                     </TableCell>
                     <TableCell>
-                      {evaluation.done ? "Finalizada" : "Pendente"}
+                      <Link
+                        href={`/evaluations/${evaluation.id}`}
+                        aria-label={`Ver detalhes da avaliação ${evaluation.id}`}
+                        className="font-semibold hover:underline"
+                      >
+                        {evaluation.done ? "Finalizada" : "Pendente"}
+                      </Link>
                     </TableCell>
                   </TableRow>
                 ))}

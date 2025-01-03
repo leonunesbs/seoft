@@ -184,6 +184,34 @@ export function EvaluationForm({
       treatment: evaluation.treatment ?? "",
       followUp: evaluation.followUp ?? "",
       nextAppointment: evaluation.nextAppointment ?? "",
+      octOD: evaluation.eyes?.rightEye?.logs.find((log) => log.type === "OCT")
+        ?.details,
+      octOS: evaluation.eyes?.leftEye?.logs.find((log) => log.type === "OCT")
+        ?.details,
+      ctCorneaOD: evaluation.eyes?.rightEye?.logs.find(
+        (log) => log.type === "CT_CORNEA",
+      )?.details,
+      ctCorneaOS: evaluation.eyes?.leftEye?.logs.find(
+        (log) => log.type === "CT_CORNEA",
+      )?.details,
+      angiographyOD: evaluation.eyes?.rightEye?.logs.find(
+        (log) => log.type === "ANGIOGRAPHY",
+      )?.details,
+      angiographyOS: evaluation.eyes?.leftEye?.logs.find(
+        (log) => log.type === "ANGIOGRAPHY",
+      )?.details,
+      visualFieldOD: evaluation.eyes?.rightEye?.logs.find(
+        (log) => log.type === "VISUAL_FIELD",
+      )?.details,
+      visualFieldOS: evaluation.eyes?.leftEye?.logs.find(
+        (log) => log.type === "VISUAL_FIELD",
+      )?.details,
+      retinographyOD: evaluation.eyes?.rightEye?.logs.find(
+        (log) => log.type === "RETINOGRAPHY",
+      )?.details,
+      retinographyOS: evaluation.eyes?.leftEye?.logs.find(
+        (log) => log.type === "RETINOGRAPHY",
+      )?.details,
     },
   });
 

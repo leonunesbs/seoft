@@ -22,7 +22,11 @@ export function AccessFileButton({
     }
 
     // Abre a aba imediatamente para evitar bloqueio de pop-ups
-    const newTab = window.open("", "_blank");
+    const newTab = window.open(
+      "",
+      "_blank",
+      "location=yes,height=720,width=1280,scrollbars=yes,status=yes",
+    );
 
     if (!newTab) {
       console.error(

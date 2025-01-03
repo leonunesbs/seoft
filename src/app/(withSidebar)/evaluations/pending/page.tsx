@@ -1,4 +1,4 @@
-import { MdEdit, MdOutlineHistory } from "react-icons/md";
+import { MdEdit, MdOutlineHistory, MdOutlineUploadFile } from "react-icons/md";
 import {
   Table,
   TableBody,
@@ -15,12 +15,11 @@ import {
   TooltipTrigger,
 } from "~/components/ui/tooltip";
 
-import { cookies } from "next/headers";
-import Link from "next/link";
-import { FaUserMd } from "react-icons/fa";
-import { AddEvaluationButton } from "~/components/atoms/add-evaluation-button";
-import { CollaboratorSwitcher } from "~/components/organisms/collaborator-switcher";
 import { Button } from "~/components/ui/button";
+import { CollaboratorSwitcher } from "~/components/organisms/collaborator-switcher";
+import { FaUserMd } from "react-icons/fa";
+import Link from "next/link";
+import { cookies } from "next/headers";
 import { db } from "~/server/db";
 
 export default async function EvaluationPending() {
@@ -86,7 +85,7 @@ export default async function EvaluationPending() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {evaluations.map(({ patient }) => (
+            {evaluations.map(({ patient, id }) => (
               <TableRow key={patient.id}>
                 <TableCell className="font-medium">{patient.refId}</TableCell>
                 <TableCell className="truncate">{patient.name}</TableCell>
@@ -103,13 +102,14 @@ export default async function EvaluationPending() {
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger asChild>
-                        <AddEvaluationButton
-                          patientId={patient.id}
-                          patientName={patient.name}
-                        />
+                        <Button asChild variant={"outline"}>
+                          <Link href={`/evaluations/${id}`}>
+                            <MdOutlineUploadFile size={18} />
+                          </Link>
+                        </Button>
                       </TooltipTrigger>
                       <TooltipContent>
-                        <p>Nova avaliação</p>
+                        <p>Continuar avaliação</p>
                       </TooltipContent>
                     </Tooltip>
                   </TooltipProvider>

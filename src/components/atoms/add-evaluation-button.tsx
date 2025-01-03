@@ -1,20 +1,27 @@
 "use client";
 
+import { Button, ButtonProps } from "../ui/button";
+
 import { Loader2 } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { MdOutlineUploadFile } from "react-icons/md";
-import { useToast } from "~/hooks/use-toast";
 import { api } from "~/trpc/react";
-import { Button } from "../ui/button";
+import { useRouter } from "next/navigation";
+import { useToast } from "~/hooks/use-toast";
+
+interface AddEvaluationButtonProps extends ButtonProps {
+  patientId: string;
+  patientName: string;
+  customChildren?: React.ReactNode;
+  customLoading?: React.ReactNode;
+}
 
 export function AddEvaluationButton({
   patientId,
   patientName,
+  customChildren,
+  customLoading,
   ...rest
-}: {
-  patientId: string;
-  patientName: string;
-}) {
+}: AddEvaluationButtonProps) {
   const router = useRouter();
   const { toast } = useToast();
 
@@ -90,18 +97,16 @@ export function AddEvaluationButton({
 
   return (
     <Button
-      {...rest}
-      type="button"
       variant="outline"
+      type="button"
       aria-label={`Nova avaliação de ${patientName}`}
-      onClick={handleAddEvaluation}
       disabled={isCollaboratorLoading || createEvaluation.isPending}
+      {...rest}
+      onClick={handleAddEvaluation}
     >
-      {createEvaluation.isPending ? (
-        <Loader2 className="animate-spin" />
-      ) : (
-        <MdOutlineUploadFile size={18} />
-      )}
+      {createEvaluation.isPending
+        ? customLoading || <Loader2 className="animate-spin" />
+        : customChildren || <MdOutlineUploadFile size={18} />}
     </Button>
   );
 }

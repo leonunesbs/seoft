@@ -1,10 +1,5 @@
 "use client";
 
-import {
-  MdDeleteOutline,
-  MdOutlineFileCopy,
-  MdSwitchLeft,
-} from "react-icons/md";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import {
   Form,
@@ -15,18 +10,23 @@ import {
   FormMessage,
 } from "../ui/form";
 import {
+  MdDeleteOutline,
+  MdOutlineFileCopy,
+  MdSwitchLeft,
+} from "react-icons/md";
+import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "../ui/tooltip";
 
-import { Prisma } from "@prisma/client";
-import { UseFormReturn } from "react-hook-form";
 import { AccessFileButton } from "../atoms/access-file-button";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
+import { Prisma } from "@prisma/client";
 import { Textarea } from "../ui/textarea";
+import { UseFormReturn } from "react-hook-form";
 
 type EvaluationFormValues = {
   biomicroscopyOD?: string;
@@ -142,16 +142,16 @@ export function EvaluationMainForm({
 
         // Mapping of field names to log types
         const fieldToLogTypeMap: Record<string, string> = {
-          tonometry: "TONOMETRY",
-          fundoscopy: "FUNDOSCOPY",
-          gonioscopy: "GONIOSCOPY",
-          biomicroscopy: "BIOMICROSCOPY",
-          pachymetry: "PACHYMETRY",
-          retinography: "RETINOGRAPHY",
+          tonometry: "TONOMETRIA",
+          fundoscopy: "FUNDOSCOPIA",
+          gonioscopy: "GONIOSCOPIA",
+          biomicroscopy: "BIOMICROSCOPIA",
+          pachymetry: "PAQUIMETRIA",
+          retinography: "RETINOGRAFIA",
           oct: "OCT",
-          visualField: "VISUAL_FIELD",
-          angiography: "ANGIOGRAPHY",
-          ctCornea: "CT_CORNEA",
+          visualField: "CAMPO_VISUAL",
+          angiography: "ANGIOGRAFIA",
+          ctCornea: "TC_CORNEA",
           // Add other mappings as needed
         };
 
@@ -217,6 +217,7 @@ export function EvaluationMainForm({
                         }
                       >
                         <MdOutlineFileCopy size={18} />
+                        Importar última
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent>
@@ -236,6 +237,7 @@ export function EvaluationMainForm({
                         }
                       >
                         <MdSwitchLeft size={18} />
+                        OE semelhante
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent>
@@ -258,6 +260,7 @@ export function EvaluationMainForm({
                         }
                       >
                         <MdDeleteOutline size={18} />
+                        Limpar
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent>
@@ -330,6 +333,7 @@ export function EvaluationMainForm({
                         }
                       >
                         <MdOutlineFileCopy size={18} />
+                        Importar última
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent>
@@ -349,6 +353,7 @@ export function EvaluationMainForm({
                         }
                       >
                         <MdSwitchLeft size={18} />
+                        OE semelhante
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent>
@@ -368,6 +373,7 @@ export function EvaluationMainForm({
                         }
                       >
                         <MdDeleteOutline size={18} />
+                        Limpar
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent>
@@ -440,6 +446,7 @@ export function EvaluationMainForm({
                         }
                       >
                         <MdOutlineFileCopy size={18} />
+                        Importar última
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent>
@@ -459,6 +466,7 @@ export function EvaluationMainForm({
                         }
                       >
                         <MdSwitchLeft size={18} />
+                        OE semelhante
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent>
@@ -478,6 +486,7 @@ export function EvaluationMainForm({
                         }
                       >
                         <MdDeleteOutline size={18} />
+                        Limpar
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent>
@@ -550,6 +559,7 @@ export function EvaluationMainForm({
                         }
                       >
                         <MdOutlineFileCopy size={18} />
+                        Importar última
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent>
@@ -569,6 +579,7 @@ export function EvaluationMainForm({
                         }
                       >
                         <MdSwitchLeft size={18} />
+                        OE semelhante
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent>
@@ -588,6 +599,7 @@ export function EvaluationMainForm({
                         }
                       >
                         <MdDeleteOutline size={18} />
+                        Limpar
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent>
@@ -660,6 +672,7 @@ export function EvaluationMainForm({
                         }
                       >
                         <MdOutlineFileCopy size={18} />
+                        Importar última
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent>
@@ -679,6 +692,7 @@ export function EvaluationMainForm({
                         }
                       >
                         <MdSwitchLeft size={18} />
+                        OE semelhante
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent>
@@ -698,6 +712,7 @@ export function EvaluationMainForm({
                         }
                       >
                         <MdDeleteOutline size={18} />
+                        Limpar
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent>
@@ -1217,6 +1232,7 @@ export function EvaluationMainForm({
                         onClick={() => handleCopyLastData(["diagnosis"])}
                       >
                         <MdOutlineFileCopy size={18} />
+                        Importar última
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent>

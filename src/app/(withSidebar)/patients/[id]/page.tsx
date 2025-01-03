@@ -1,7 +1,14 @@
-import { notFound } from "next/navigation";
+import { MdOutlineHistory, MdOutlineUploadFile } from "react-icons/md";
+
+import { AddEvaluationButton } from "~/components/atoms/add-evaluation-button";
+import { Button } from "~/components/ui/button";
+import Link from "next/link";
+import { Loader2 } from "lucide-react";
 import { PageHeading } from "~/components/atoms/page-heading";
 import { PatientForm } from "~/components/organisms/patient-form";
+import { Separator } from "~/components/ui/separator";
 import { db } from "~/server/db";
+import { notFound } from "next/navigation";
 
 type Params = Promise<{ id: string }>;
 export default async function Patient({ params }: { params: Params }) {
@@ -22,7 +29,37 @@ export default async function Patient({ params }: { params: Params }) {
   if (!patient) return notFound();
   return (
     <div className="pl-2">
-      <PageHeading>Detalhes do Paciente</PageHeading>
+      <div className="mb-4 flex items-center justify-between">
+        <PageHeading>Detalhes do Paciente</PageHeading>
+        <div className="flex gap-2">
+          {/* Botão para reabrir a avaliação */}
+
+          <Button asChild variant={"outline"}>
+            <Link href={`/patients/${patient.id}/history`}>
+              <MdOutlineHistory />
+              Histórico
+            </Link>
+          </Button>
+
+          <AddEvaluationButton
+            patientId={patient.id}
+            patientName={patient.name}
+            variant={"default"}
+            customChildren={
+              <>
+                <MdOutlineUploadFile />
+                Nova Avaliação
+              </>
+            }
+            customLoading={
+              <>
+                <Loader2 className="animate-spin" />
+                Carregando...
+              </>
+            }
+          />
+        </div>
+      </div>
 
       <PatientForm
         initialData={{
@@ -32,7 +69,8 @@ export default async function Patient({ params }: { params: Params }) {
           birthDate: patient.birthDate.toISOString(),
         }}
       />
-      <div className="mt-8">
+      <Separator className="my-4" />
+      <div>
         <h2 className="text-xl font-bold">Evaluation History</h2>
         <ul>
           {patient.evaluations.map((evaluation) => (

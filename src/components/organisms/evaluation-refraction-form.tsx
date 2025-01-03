@@ -39,9 +39,9 @@ import {
 
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
+import { Input } from "~/components/ui/input";
 import { Loader2 } from "lucide-react";
 import { Separator } from "../ui/separator";
-import { Slider } from "../ui/slider";
 import { api } from "~/trpc/react";
 import { toast } from "~/hooks/use-toast";
 import { useForm } from "react-hook-form";
@@ -274,8 +274,8 @@ export function EvaluationRefractionForm({
       sphericalOS: 0,
       cylinderOD: 0,
       cylinderOS: 0,
-      axisOD: 180,
-      axisOS: 180,
+      axisOD: 0,
+      axisOS: 0,
       visualAcuityOD: "",
       visualAcuityOS: "",
     },
@@ -473,93 +473,99 @@ export function EvaluationRefractionForm({
                   <FormField
                     control={form.control}
                     name="sphericalOD"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>
-                          Esférico:{" "}
-                          {Number(field.value) > 0
-                            ? `+${parseFloat(
-                                field.value as unknown as string,
-                              ).toFixed(2)}`
-                            : parseFloat(
-                                field.value as unknown as string,
-                              ).toFixed(2)}
-                        </FormLabel>
-                        <FormControl>
-                          <Slider
-                            {...field}
-                            onValueChange={(value) => {
-                              field.onChange(value[0]);
-                            }}
-                            value={[
-                              parseFloat(field.value as unknown as string) ?? 0,
-                            ]}
-                            max={20}
-                            min={-20}
-                            step={0.25}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
+                    render={({ field }) => {
+                      const numericValue = parseFloat(
+                        String(field.value) || "0",
+                      );
+                      return (
+                        <FormItem>
+                          <FormLabel>
+                            Esférico:{" "}
+                            {numericValue > 0
+                              ? `+${numericValue.toFixed(2)}`
+                              : numericValue.toFixed(2)}
+                          </FormLabel>
+                          <FormControl>
+                            <Input
+                              type="number"
+                              step={0.25}
+                              value={field.value}
+                              onChange={(e) => {
+                                field.onChange(e.target.value);
+                              }}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      );
+                    }}
                   />
                   {/* Cilíndrico OD */}
                   <FormField
                     control={form.control}
                     name="cylinderOD"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>
-                          Cilíndrico:{" "}
-                          {Number(field.value) > 0
-                            ? `+${parseFloat(
-                                field.value as unknown as string,
-                              ).toFixed(2)}`
-                            : parseFloat(
-                                field.value as unknown as string,
-                              ).toFixed(2)}
-                        </FormLabel>
-                        <FormControl>
-                          <Slider
-                            onValueChange={(value) => {
-                              if (field.value !== -value[0]!) {
-                                field.onChange(-value[0]!);
-                              }
-                            }}
-                            value={[
-                              Number(field.value) ? -Number(field.value) : 0,
-                            ]}
-                            max={6}
-                            min={0}
-                            step={0.25}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
+                    render={({ field }) => {
+                      const numericValue = parseFloat(
+                        String(field.value) || "0",
+                      );
+                      return (
+                        <FormItem>
+                          <FormLabel>
+                            Cilíndrico:{" "}
+                            {numericValue > 0
+                              ? `+${numericValue.toFixed(2)}`
+                              : numericValue.toFixed(2)}
+                          </FormLabel>
+                          <FormControl>
+                            <Input
+                              type="number"
+                              step={0.25}
+                              value={field.value}
+                              onChange={(e) => {
+                                /**
+                                 * Se quiser manter a lógica de "valor negativo" do slider,
+                                 * podemos forçar o valor para negativo aqui.
+                                 */
+                                const rawValue = parseFloat(
+                                  e.target.value || "0",
+                                );
+                                // Exemplo: forçar para negativo
+                                field.onChange(
+                                  (-Math.abs(rawValue)).toString(),
+                                );
+                              }}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      );
+                    }}
                   />
                   {/* Eixo OD */}
                   <FormField
                     control={form.control}
                     name="axisOD"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Eixo: {field.value}º</FormLabel>
-                        <FormControl>
-                          <Slider
-                            {...field}
-                            onValueChange={(value) => {
-                              field.onChange(value[0]);
-                            }}
-                            value={[Number(field.value) ?? 0]}
-                            max={180}
-                            min={0}
-                            step={5}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
+                    render={({ field }) => {
+                      const numericValue = parseFloat(
+                        String(field.value) || "0",
+                      );
+                      return (
+                        <FormItem>
+                          <FormLabel>Eixo: {numericValue}º</FormLabel>
+                          <FormControl>
+                            <Input
+                              type="number"
+                              step={5}
+                              value={field.value}
+                              onChange={(e) => {
+                                field.onChange(e.target.value);
+                              }}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      );
+                    }}
                   />
                   {/* Acuidade Visual OD */}
                   <FormField
@@ -601,91 +607,97 @@ export function EvaluationRefractionForm({
                   <FormField
                     control={form.control}
                     name="sphericalOS"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>
-                          Esférico:{" "}
-                          {Number(field.value) > 0
-                            ? `+${parseFloat(
-                                field.value as unknown as string,
-                              ).toFixed(2)}`
-                            : parseFloat(
-                                field.value as unknown as string,
-                              ).toFixed(2)}
-                        </FormLabel>
-                        <FormControl>
-                          <Slider
-                            {...field}
-                            onValueChange={(value) => {
-                              field.onChange(value[0]);
-                            }}
-                            value={[Number(field.value) ?? 0]}
-                            max={20}
-                            min={-20}
-                            step={0.25}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
+                    render={({ field }) => {
+                      const numericValue = parseFloat(
+                        String(field.value) || "0",
+                      );
+                      return (
+                        <FormItem>
+                          <FormLabel>
+                            Esférico:{" "}
+                            {numericValue > 0
+                              ? `+${numericValue.toFixed(2)}`
+                              : numericValue.toFixed(2)}
+                          </FormLabel>
+                          <FormControl>
+                            <Input
+                              type="number"
+                              step={0.25}
+                              value={field.value}
+                              onChange={(e) => {
+                                field.onChange(e.target.value);
+                              }}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      );
+                    }}
                   />
                   {/* Cilíndrico OS */}
                   <FormField
                     control={form.control}
                     name="cylinderOS"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>
-                          Cilíndrico:{" "}
-                          {Number(field.value) > 0
-                            ? `+${parseFloat(
-                                field.value as unknown as string,
-                              ).toFixed(2)}`
-                            : parseFloat(
-                                field.value as unknown as string,
-                              ).toFixed(2)}
-                        </FormLabel>
-                        <FormControl>
-                          <Slider
-                            onValueChange={(value) => {
-                              if (field.value !== -value[0]!) {
-                                field.onChange(-value[0]!);
-                              }
-                            }}
-                            value={[
-                              Number(field.value) ? -Number(field.value) : 0,
-                            ]}
-                            max={6}
-                            min={0}
-                            step={0.25}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
+                    render={({ field }) => {
+                      const numericValue = parseFloat(
+                        String(field.value) || "0",
+                      );
+                      return (
+                        <FormItem>
+                          <FormLabel>
+                            Cilíndrico:{" "}
+                            {numericValue > 0
+                              ? `+${numericValue.toFixed(2)}`
+                              : numericValue.toFixed(2)}
+                          </FormLabel>
+                          <FormControl>
+                            <Input
+                              type="number"
+                              step={0.25}
+                              value={field.value}
+                              onChange={(e) => {
+                                /**
+                                 * Novamente, se quiser manter a lógica de valor negativo:
+                                 */
+                                const rawValue = parseFloat(
+                                  e.target.value || "0",
+                                );
+                                field.onChange(
+                                  (-Math.abs(rawValue)).toString(),
+                                );
+                              }}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      );
+                    }}
                   />
                   {/* Eixo OS */}
                   <FormField
                     control={form.control}
                     name="axisOS"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Eixo: {field.value}º</FormLabel>
-                        <FormControl>
-                          <Slider
-                            {...field}
-                            onValueChange={(value) => {
-                              field.onChange(value[0]);
-                            }}
-                            value={[Number(field.value) ?? 0]}
-                            max={180}
-                            min={0}
-                            step={5}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
+                    render={({ field }) => {
+                      const numericValue = parseFloat(
+                        String(field.value) || "0",
+                      );
+                      return (
+                        <FormItem>
+                          <FormLabel>Eixo: {numericValue}º</FormLabel>
+                          <FormControl>
+                            <Input
+                              type="number"
+                              step={5}
+                              value={field.value}
+                              onChange={(e) => {
+                                field.onChange(e.target.value);
+                              }}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      );
+                    }}
                   />
                   {/* Acuidade Visual OS */}
                   <FormField

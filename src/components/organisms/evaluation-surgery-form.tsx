@@ -261,7 +261,7 @@ export function EvaluationSurgeryForm({
               ))
             ) : (
               <div className="flex items-center justify-center text-gray-500">
-                Nenhuma cirurgia registrada.
+                Nenhuma cirurgia prévia registrada.
               </div>
             )}
 

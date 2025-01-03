@@ -7,9 +7,12 @@ import {
   TableHeader,
   TableRow,
 } from "~/components/ui/table";
+import { isValidURL, translateType } from "~/lib/utils";
+import { notFound, redirect } from "next/navigation";
 
-import { notFound } from "next/navigation";
+import { AccessFileButton } from "~/components/atoms/access-file-button";
 import { CopyPromptButton } from "~/components/atoms/copy-prompt-button";
+import { PageHeading } from "~/components/atoms/page-heading";
 import { ReopenEvaluationButton } from "~/components/atoms/reopen-evaluation-button";
 import { Separator } from "~/components/ui/separator";
 import { db } from "~/server/db";
@@ -324,10 +327,12 @@ export default async function EvaluationSummaryPage({
   // Gere o conteúdo para o botão de copiar
   const prompt = generateOutput();
 
+  if (!evaluation.done) redirect(`/evaluations/${id}`);
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold">Resumo da Avaliação</h1>
+        <PageHeading>Resumo da Avaliação</PageHeading>
         <div className="flex gap-2">
           {/* Botão para reabrir a avaliação */}
           <ReopenEvaluationButton evaluation={evaluation} />
@@ -335,7 +340,6 @@ export default async function EvaluationSummaryPage({
           <CopyPromptButton prompt={prompt} />
         </div>
       </div>
-
       {/* Informações do Paciente */}
       <Card>
         <CardHeader>
@@ -359,7 +363,6 @@ export default async function EvaluationSummaryPage({
           </p>
         </CardContent>
       </Card>
-
       {/* Detalhes do Atendimento */}
       <Card>
         <CardHeader>
@@ -400,7 +403,6 @@ export default async function EvaluationSummaryPage({
           </p>
         </CardContent>
       </Card>
-
       {/* Dados dos Olhos, Acuidade Visual, Refração e Históricos de Cirurgias */}
       <div className="flex flex-col gap-6 sm:flex-row">
         {/* Olho Direito */}
@@ -440,8 +442,19 @@ export default async function EvaluationSummaryPage({
                 <TableBody>
                   {rightEyeLogs.map((log, index) => (
                     <TableRow key={index}>
-                      <TableCell>{log.type || "N/A"}</TableCell>
-                      <TableCell>{log.details || "N/A"}</TableCell>
+                      <TableCell>{translateType(log.type) || "N/A"}</TableCell>
+                      <TableCell>
+                        {log.details && isValidURL(log.details) ? (
+                          <AccessFileButton
+                            fileName={log.details.split("/").pop() as string}
+                            key={index}
+                          >
+                            Ver
+                          </AccessFileButton>
+                        ) : (
+                          log.details || "N/A"
+                        )}
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -516,8 +529,19 @@ export default async function EvaluationSummaryPage({
                 <TableBody>
                   {leftEyeLogs.map((log, index) => (
                     <TableRow key={index}>
-                      <TableCell>{log.type || "N/A"}</TableCell>
-                      <TableCell>{log.details || "N/A"}</TableCell>
+                      <TableCell>{translateType(log.type) || "N/A"}</TableCell>
+                      <TableCell>
+                        {log.details && isValidURL(log.details) ? (
+                          <AccessFileButton
+                            fileName={log.details.split("/").pop() as string}
+                            key={index}
+                          >
+                            Ver
+                          </AccessFileButton>
+                        ) : (
+                          log.details || "N/A"
+                        )}
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -555,7 +579,6 @@ export default async function EvaluationSummaryPage({
           </CardContent>
         </Card>
       </div>
-
       {/* Histórico de Avaliações do Paciente */}
       <Card>
         <CardHeader>
