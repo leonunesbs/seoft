@@ -138,11 +138,9 @@ export function EvaluationForm({
     },
   });
 
-  const emptyBiomicroscopy =
-    "Pálpebras: \nConjuntiva: \nCórnea: \nCâmara anterior: \nÍris: \nCristalino: \nVítreo: \n";
-  const emptyFundoscopy =
-    "Retina: \nNervo: \nEscavação: \nMácula: \nVasos: \nPeriferia: \n";
-  const emptyGonioscopy = "Superior: \nInferior: \nNasal: \nTemporal: \n";
+  const emptyBiomicroscopy = "";
+  const emptyFundoscopy = "";
+  const emptyGonioscopy = "";
 
   const mainForm = useForm<MainFormValues>({
     resolver: zodResolver(mainFormSchema),
